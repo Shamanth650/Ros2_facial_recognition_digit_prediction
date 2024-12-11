@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+    <gazebo reference="base_link">
+        <material>
+            Gazebo/Blue
+        </material>
+    </gazebo>
+    <gazebo refernce="right_wheel_link">
+        <material>
+            Gazebo/Green
+        </material>
+    </gazebo>
+    <gazebo refernce="left_wheel_link">
+        <material>
+            Gazebo/Green
+        </material>    
+    </gazebo>
+    <gazebo refernce="caster_wheel_link">
+        <material>
+            Gazebo/Green
+        </material>
+        <mu1 value="0.1"/>
+        <mu2 value="0.1"/>
+    </gazebo>
+
+    <gazebo reference="platform_link">
+        <material>Gazebo/White</material>
+    </gazebo>
+
+    <gazebo reference="horizontal_gps_stand">
+        <material>Gazebo/White</material>
+    </gazebo>
+    
+    <gazebo reference="vertical_gps_stand">
+        <material>Gazebo/White</material>
+    </gazebo>
+
+    <gazebo reference="lidar_front">
+        <material>Gazebo/Purple</material>
+    </gazebo>
+
+    <gazebo reference="lidar_back">
+        <material>Gazebo/Purple</material>
+    </gazebo>
+
+    <gazebo reference="camera_front">
+        <material>Gazebo/Purple</material>
+    </gazebo>
+
+    <gazebo reference="camera_back">
+        <material>Gazebo/Purple</material>
+    </gazebo>
+
+    <gazebo reference="gps_antena">
+        <material>Gazebo/Purple</material>
+    </gazebo>
+
+    <gazebo reference="lte_antena">
+        <material>Gazebo/Grey</material>
+    </gazebo>
+
+    <gazebo reference="jetson">
+        <material>Gazebo/Grey</material>
+    </gazebo>
+
+    <gazebo reference="emergency_stop">
+        <material>Gazebo/Purple</material>
+    </gazebo>
+    
+    <gazebo>
+        <plugin name="diff_drive_controller" filename="libgazebo_ros_diff_drive.so">
+            <!-- Update rate in Hz -->
+            <update_rate>50</update_rate>
+      
+            <!-- wheels -->
+            <left_joint>base_left_wheel_joint</left_joint>
+            <right_joint>base_right_wheel_joint</right_joint>
+      
+            <!-- kinematics -->
+            <wheel_separation>0.38</wheel_separation>
+            <wheel_diameter>0.2</wheel_diameter>
+
+            <max_wheel_torque>20</max_wheel_torque>
+      
+            <!-- output -->
+            <publish_odom>true</publish_odom>
+            <publish_odom_tf>true</publish_odom_tf>
+            <publish_wheel_tf>true</publish_wheel_tf>
+      
+            <odometry_topic>odom</odometry_topic>
+            <odometry_frame>odom</odometry_frame>
+            <robot_base_frame>base_footprint</robot_base_frame>
+      
+        </plugin>
+    </gazebo>
+   
+    <gazebo reference="camera_front">
+        <material>Gazebo/Red</material>
+        <sensor name="camera_sensor" type="camera">
+            <pose>0 0 0 0 0 0</pose>
+            <visualize>true</visualize>
+            <update_rate>10.0</update_rate>
+            <plugin name="camera_controller" filename="libgazebo_ros_camera.so">    
+                <frame_name>camera_front</frame_name>
+            </plugin>
+        </sensor>
+    </gazebo>
+    <gazebo reference="lidar_front">
+    <sensor name="rplidar" type="ray">
+        <pose>0 0 0.2 0 0 0</pose>
+        <always_on>true</always_on>
+        <visualize>true</visualize>
+        <update_rate>10</update_rate>
+        <ray>
+        <scan>
+            <horizontal>
+            <samples>1440</samples>
+            <resolution>1</resolution>
+            <min_angles>-1.57</min_angles>
+            <max_angle>1.57</max_angle>
+            </horizontal>
+        </scan>
+        <range>
+            <min>0.05</min>
+            <max>12.0</max>
+            <resolution>0.015000</resolution>
+        </range>
+        <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+        </noise>
+        </ray>
+        <plugin name="scan" filename="libgazebo_ros_ray_sensor.so">    
+        <ros>
+            <remapping>~/out:=scan</remapping>
+        </ros>
+        <output_type>sensor_msgs/LaserScan</output_type>
+            <frame_name>lidar_front</frame_name>
+        </plugin>
+    </sensor>
+
+    </gazebo>
+
+    
+
+</robot>

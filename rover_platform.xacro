@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    
+    <xacro:property name="platform_length" value="0.60" />
+    <xacro:property name="platform_width" value="0.45" />
+    <xacro:property name="platform_height" value="0.001" />
+
+    <link name="platform_link">
+        <visual>
+            <geometry>
+                <box size="${platform_length} ${platform_width} ${platform_height}" />
+            </geometry>
+            <origin xyz="0 0 ${platform_height / 2}" rpy="0 0 0" />
+            <material name="grey" />
+        </visual>
+        <!--collision>
+            <origin xyz="0 0 ${platform_height / 2}" rpy="0 0 0" />
+            <geometry>
+                <box size="${platform_length} ${platform_width} ${platform_height}" />
+            </geometry>
+        </collision-->
+        <xacro:box_inertia m="4.0" l="${platform_length}" w="${platform_width}" h="${platform_height}" xyz="0 0 ${platform_height / 2}" rpy="0 0 0" /> 
+    </link>
+
+    <link name="vertical_gps_stand">
+        <visual>
+            <geometry>
+                <box size="0.025 0.05 0.56" />
+            </geometry>
+            <origin xyz="0 0 0.28" rpy="0 0 0" />
+            <material name="grey" />
+        </visual>
+        <!--collision>
+            <origin xyz="0 0 0.25" rpy="0 0 0" />
+            <geometry>
+                <box size="0.25 0.5 0.56" />
+            </geometry>
+        </collision-->
+        <xacro:box_inertia m="2.5" l="0.025" w="0.05" h="0.56" xyz="0 0 0.28" rpy="0 0 0" />
+    </link>
+
+    <link name="horizontal_gps_stand">
+        <visual>
+            <geometry>
+                <box size="0.025 0.54 0.025" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <material name="grey" />
+        </visual>
+    </link>
+
+    <link name="horizontal_camera_stand">
+        <visual>
+            <geometry>
+                <box size="0.18 0.05 0.0025" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <material name="grey" />
+        </visual>
+    </link>
+
+    <link name="jetson">
+        <visual>
+            <geometry>
+                <box size="0.11 0.11 0.09" />
+            </geometry>
+            <origin xyz="0 0 0.0225" rpy="0 0 0" />
+            <material name="black" />
+        </visual>
+    </link>
+
+    <link name="emergency_stop">
+        <visual>
+            <geometry>
+                <box size="0.075 0.075 0.09" />
+            </geometry>
+            <origin xyz="0 0 0.0575" rpy="0 0 0" />
+            <material name="yellow" />
+        </visual>
+    </link>
+
+    <joint name="emergency_link" type="fixed">
+        <parent link="horizontal_gps_stand" />
+        <child link="emergency_stop" />
+        <origin xyz="0 -0.219 0" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="base_platform_joint" type="fixed">
+        <parent link="base_link" />
+        <child link="platform_link" />
+        <origin xyz="0 0 0.210" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="base_vertical_gps_stand_joint" type="fixed">
+        <parent link="platform_link" />
+        <child link="vertical_gps_stand" />
+        <origin xyz="0.1775 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="vertical_hroizontal_gps_stand_joint" type="fixed">
+        <parent link="vertical_gps_stand" />
+        <child link="horizontal_gps_stand" />
+        <origin xyz="0 0 0.56" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="vertical_hroizontal_camera_stand_joint" type="fixed">
+        <parent link="vertical_gps_stand" />
+        <child link="horizontal_camera_stand" />
+        <origin xyz="0 0 0.465" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="platform_jetson_joint" type="fixed">
+        <parent link="platform_link" />
+        <child link="jetson" />
+        <origin xyz="0.19 -0.12 0.04" rpy="0 0 0"/>
+    </joint>
+</robot>
